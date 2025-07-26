@@ -7,18 +7,76 @@
     <meta name="description" content="Fast, reliable, and affordable vehicle recovery and car care services. 24/7 emergency towing, mobile car wash, and automotive maintenance nationwide." />
     <meta name="author" content="EASY FIX" />
 
+    <!-- Open Graph / Facebook -->
     <meta property="og:title" content="EASY FIX - Professional Vehicle Recovery & Car Care Services" />
     <meta property="og:description" content="Fast, reliable, and affordable vehicle recovery and car care services. 24/7 emergency towing, mobile car wash, and automotive maintenance nationwide." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta property="og:image" content="/assets/easyfix-og.png" />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta name="twitter:site" content="@easyfix" />
+    <meta name="twitter:image" content="/assets/easyfix-og.png" />
+
+    <link rel="icon" type="image/png" href="/mylog.png" />
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+      .quote-wrapper {
+        padding: 60px 20px;
+        background: white;
+      }
+      .animated-gif {
+        max-width: 300px;
+        display: block;
+        margin: 0 auto 30px;
+      }
+      .changing-quote {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+        animation: fadein 2s;
+      }
+      @keyframes fadein {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+    </style>
   </head>
 
   <body>
+    <div class="quote-wrapper">
+      <!-- Animated Image -->
+      <img src="/assets/car-animation.gif" alt="Car Animation" class="animated-gif" />
+    </div>
+
+    <!-- React root -->
     <div id="root"></div>
+
+    <!-- Quote changing script -->
+    <script>
+      const quotes = [
+        "We fix. We recover. You relax.",
+        "Your car, our care — anytime, anywhere.",
+        "Driven by trust, powered by service.",
+        "24/7 recovery, always at your service.",
+        "Easy Fix: Where cars feel better."
+      ];
+      let quoteIndex = 0;
+      const quoteElement = document.getElementById("changingQuote");
+
+      setInterval(() => {
+        quoteIndex = (quoteIndex + 1) % quotes.length;
+        quoteElement.textContent = quotes[quoteIndex];
+      }, 4000); // Change every 4 seconds
+    </script>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

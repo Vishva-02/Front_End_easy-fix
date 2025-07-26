@@ -47,6 +47,32 @@ const Services = () => {
       color: "luxury"
     }
   ];
+const getHoverClass = (color: string) => {
+  switch (color) {
+    case "primary":
+      return "hover:border-primary hover:shadow-primary/50";
+    case "accent":
+      return "hover:border-accent hover:shadow-accent/50";
+    case "luxury":
+      return "hover:border-yellow-600 hover:shadow-yellow-400/50";
+    default:
+      return "hover:border-gray-300 hover:shadow-md";
+  }
+};
+
+const getHoverBg = (color: string) => {
+  switch (color) {
+    case "primary":
+      return "hover:bg-primary/5";
+    case "accent":
+      return "hover:bg-accent/5";
+    case "luxury":
+      return "hover:bg-yellow-50";
+    default:
+      return "hover:bg-gray-50";
+  }
+};
+
 
   return (
     <section id="services" className="py-20 bg-muted/30">
@@ -66,11 +92,21 @@ const Services = () => {
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
-              <Card key={index} className="relative overflow-hidden group hover:shadow-luxury transition-all duration-300 transform hover:scale-105 border-2 hover:border-primary/20">
+            <Card
+  key={index}
+  className={`relative overflow-hidden group transition-all duration-300 transform border-2 cursor-pointer 
+    hover:scale-105 bg-white shadow-md hover:shadow-2xl ${getHoverClass(service.color)} ${getHoverBg(service.color)}`}>
+
+
+
+
+
                 <CardHeader className="text-center pb-4">
-                  <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-${service.color}/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className={`h-8 w-8 text-${service.color}`} />
-                  </div>
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center group-hover:scale-110 group-hover:bg-primary/10 transition-transform duration-300">
+                  <Icon className={`h-8 w-8 ${getHoverClass(service.color)} group-hover:opacity-80`} />
+                </div>
+
+
                   <CardTitle className="text-2xl font-bold">{service.title}</CardTitle>
                   <CardDescription className="text-base">{service.description}</CardDescription>
                 </CardHeader>
