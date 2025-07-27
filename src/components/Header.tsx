@@ -125,6 +125,15 @@ const Header = () => {
                 </Link>
               )
             )}
+            {/* Mobile Login Button */}
+            <Link
+              to="/login"
+              onClick={() => setIsMenuOpen(false)}
+              className="group flex items-center gap-2 px-4 py-2 bg-muted text-foreground rounded-full border border-border hover:bg-primary hover:text-primary-foreground transition-all font-medium shadow-sm w-full"
+              >
+              <LogIn className="h-4 w-4 group-hover:translate-x-1 group-hover:scale-110 transition-transform" />
+                Login
+          </Link>
 
             {/* Book Now Button */}
             <div className="px-3 py-2">
