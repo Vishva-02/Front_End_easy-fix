@@ -1,12 +1,11 @@
-<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Play, Star, Clock, Shield, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
-=======
+
 import { Button } from "@/components/ui/button";
 import { Play, Star, Clock, Shield, Wrench, Car, Zap } from "lucide-react";
->>>>>>> f73d9c1cd5cda9186076212cd3983f28bbed8a02
+
 import heroImage from "@/assets/hero-service.jpg";
 
 const quotes = [
