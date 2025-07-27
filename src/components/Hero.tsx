@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Play, Star, Clock, Shield, Wrench } from "lucide-react";
-import heroImage from "@/assets/hero-service.jpg";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Play, Star, Clock, Shield, Wrench } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import heroImage from "@/assets/hero-service.jpg";
 
 const quotes = [
   "We fix. We recover. You relax.",
@@ -12,8 +13,10 @@ const quotes = [
 ];
 
 const Hero = () => {
+  const [showVideo, setShowVideo] = useState(false);
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [fade, setFade] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,8 +24,8 @@ const Hero = () => {
       setTimeout(() => {
         setQuoteIndex((prev) => (prev + 1) % quotes.length);
         setFade(true);
-      }, 500); // fade out before changing
-    }, 4000); // total cycle
+      }, 500);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, []);
@@ -61,18 +64,45 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button variant="hero" size="lg" className="text-lg px-8 py-6">
+            <Button
+              variant="hero"
+              size="lg"
+              className="text-lg px-8 py-6"
+              onClick={() => navigate("/emergency-support")}
+            >
               Book Emergency Service
             </Button>
+
             <Button
               variant="outline"
               size="lg"
               className="text-lg px-8 py-6 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white hover:text-foreground"
+              onClick={() => setShowVideo(true)}
             >
               <Play className="h-5 w-5 mr-2" />
               Watch How It Works
             </Button>
           </div>
+
+          {/* Video Modal */}
+          {showVideo && (
+            <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
+              <div className="relative w-full max-w-3xl mx-auto">
+                <video
+                  src="/videos/car-easy-video.mp4" // ✅ Video in public/videos folder
+                  controls
+                  autoPlay
+                  className="w-full rounded-lg shadow-lg"
+                />
+                <button
+                  onClick={() => setShowVideo(false)}
+                  className="absolute top-2 right-2 text-white text-xl bg-black bg-opacity-50 px-3 py-1 rounded"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Highlights */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">

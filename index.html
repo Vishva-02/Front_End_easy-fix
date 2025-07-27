@@ -19,30 +19,37 @@
     <meta name="twitter:image" content="/assets/easyfix-og.png" />
 
     <link rel="icon" type="image/png" href="/mylog.png" />
+    <link id="favicon" rel="icon" href="/favicon.ico" />
+
 
     <style>
       body {
         font-family: Arial, sans-serif;
-        background: #f4f4f4;
+        background: #fff8e1;
+        color: #4a3f1c;
         margin: 0;
         padding: 0;
         text-align: center;
       }
+
       .quote-wrapper {
         padding: 60px 20px;
-        background: white;
+        background: #fff3c4;
       }
+
       .animated-gif {
         max-width: 300px;
         display: block;
         margin: 0 auto 30px;
       }
+
       .changing-quote {
         font-size: 1.5rem;
         font-weight: bold;
-        color: #333;
+        color: #a8862d;
         animation: fadein 2s;
       }
+
       @keyframes fadein {
         from { opacity: 0; }
         to { opacity: 1; }
@@ -51,10 +58,6 @@
   </head>
 
   <body>
-    <div class="quote-wrapper">
-      <!-- Animated Image -->
-      <img src="/assets/car-animation.gif" alt="Car Animation" class="animated-gif" />
-    </div>
 
     <!-- React root -->
     <div id="root"></div>
@@ -74,7 +77,7 @@
       setInterval(() => {
         quoteIndex = (quoteIndex + 1) % quotes.length;
         quoteElement.textContent = quotes[quoteIndex];
-      }, 4000); // Change every 4 seconds
+      }, 4000);
     </script>
 
     <script type="module" src="/src/main.tsx"></script>
