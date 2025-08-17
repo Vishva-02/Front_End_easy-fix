@@ -1,11 +1,16 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Car, CarFront } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
 
 const BookingForm = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -21,16 +26,46 @@ const BookingForm = () => {
     notes: "",
   });
 
-  const handleChange = (
+   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const handleSubmit = (e: React.FormEvent) => {
+   
+   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Booking Details:", formData);
-    // Submit logic here
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        toast({ title: "Authentication Error", description: "You must be logged in to book." });
+        navigate('/login');
+        return;
+      }
+
+      const response = await fetch("http://localhost:3000/api/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // Send the token!
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create booking.");
+      }
+
+      toast({ title: "Success!", description: "Your booking has been confirmed." });
+      navigate("/dashboard"); // Redirect to dashboard on success
+
+    } catch (error) {
+      console.error("Booking failed:", error);
+      toast({ title: "Booking Failed", description: "Something went wrong. Please try again.", variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

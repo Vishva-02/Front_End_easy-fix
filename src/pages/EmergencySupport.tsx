@@ -3,14 +3,56 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, PhoneCall, AlertTriangle } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 const EmergencySupport = () => {
-  const [submitted, setSubmitted] = useState(false);
+  const[name, setName] = useState("");
+  const[phone, setPhone] = useState("");
+  const[vehicleType, setVehicleType] =useState("");
+  const [issue, setIssue] = useState("");
+  const[location, setLocation] = useState("");
+  const [notes, setNotes] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Implement form submission logic here
-    setSubmitted(true);
+  const[isSubmitting, setIsSubmitting] = useState(false);
+  const[submitted, setSubmitted] = useState(false);
+
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+
+  try {
+    const token = localStorage.getItem('token'); // <-- Get the token
+    if (!token) {
+      toast({ title: "Not Authenticated", description: "You must be logged in to make a request."});
+      return;
+    }
+
+    const res = await fetch("http://localhost:3000/api/emergency", {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` // <-- Add the token to headers
+      },
+      body: JSON.stringify({ name, phone, vehicleType, issue, location, notes }),
+    });
+
+      if (res.ok) {
+        // Only set submitted to true on a successful response
+        setSubmitted(true);
+      } else {
+        // If the server responded with an error, throw an error to be caught
+        throw new Error("Server responded with a status of " + res.status);
+      }
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "Submissison Failed",
+        description: "Could not send your request. Please call the hotline.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -42,20 +84,25 @@ const EmergencySupport = () => {
           </div>
         </div>
 
-        {/* Form */}
+        {/* Form Container */}
         <div className="bg-[#f9f5f0]/80 rounded-2xl shadow-lg p-8">
           {!submitted ? (
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <Input required placeholder="Your Name" className="col-span-1" />
-              <Input required placeholder="Phone Number" type="tel" className="col-span-1" />
-              <Input required placeholder="Vehicle Type (e.g., Car, Bike)" className="col-span-1" />
-              <Input required placeholder="Issue (e.g., Breakdown, Flat Tire)" className="col-span-1" />
-              <Input required placeholder="Current Location" className="col-span-2" />
-              <Textarea placeholder="Additional Notes (optional)" className="col-span-2" />
-              <div className="col-span-2 text-center">
-                <Button type="submit" className="px-8 py-4 text-lg">Send Request</Button>
-              </div>
-            </form>
+<form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+  <Input required name="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your Name" className="col-span-1" />
+  <Input required name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Phone Number" type="tel" className="col-span-1" />
+  <Input required name="vehicleType" value={vehicleType} onChange={(e) => setVehicleType(e.target.value)} placeholder="Vehicle Type (e.g., Car, Bike)" className="col-span-1" />
+  <Input required name="issue" value={issue} onChange={(e) => setIssue(e.target.value)} placeholder="Issue (e.g., Breakdown, Flat Tire)" className="col-span-1" />
+  
+  {/* THIS IS THE CORRECTED LINE */}
+  <Input required name="location" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Current Location" className="col-span-2" />
+
+  <Textarea name="notes" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Additional Notes (optional)" className="col-span-2" />
+  <div className="col-span-2 text-center">
+    <Button type="submit" className="px-8 py-4 text-lg bg-red-600 hover:bg-red-700 text-white" disabled={isSubmitting}>
+      {isSubmitting ? "Sending..." : "Send Request"}
+    </Button>
+  </div>
+</form>
           ) : (
             <div className="text-center py-10">
               <h2 className="text-2xl font-semibold text-green-600 mb-4">Request Submitted!</h2>

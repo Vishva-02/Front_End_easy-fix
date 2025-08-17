@@ -15,6 +15,7 @@ import Services from "./components/Services";
 import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./components/Footer";
 import EmergencySupport from "@/pages/EmergencySupport";
+import Dashboard from './components/Dashboard';
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/services" element={<Services />} />
               <Route path="/emergency-support" element={<EmergencySupport />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
